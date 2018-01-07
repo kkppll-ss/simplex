@@ -17,7 +17,7 @@ def solve_canonical_LP(LP_matrix: np.ndarray, bases: np.ndarray, verbose=False) 
                                    "got {} and {}".format(bases.size, rows)
     assert np.all(np.abs(LP_matrix[0, bases]) < 1e-10), \
         "we want the coefficients of basic variables in the objective function to be 0, get {}".format(LP_matrix[0])
-    assert np.all(LP_matrix[1:, columns-1] > 1e-10), \
+    assert not np.any(LP_matrix[1:, columns-1] < -1e-10), \
         "we want the right side to be positive, get {}".format(LP_matrix[1:, columns-1])
 
     it = 0
@@ -106,24 +106,33 @@ def solve_LP(LP_matrix, var_constraints, func_constraints, verbose=False):
 
 
 def main():
-    np.set_printoptions(precision=4, suppress=True)
-    LP_matrix = np.array([[0.4, 0.5, 0],
-                          [0.3, 0.1, 2.7],
-                          [0.5, 0.5, 6],
-                          [0.6, 0.4, 6]])
-    var_constraints = np.array([1, 1])
-    func_constraints = np.array([-1, 0, 1])
-    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
-    print("solution is {}, solution value is {}".format(solution, solution_value))
+    np.set_printoptions(precision=3, suppress=True)
+    # LP_matrix = np.array([[0.4, 0.5, 0],
+    #                       [0.3, 0.1, 2.7],
+    #                       [0.5, 0.5, 6],
+    #                       [0.6, 0.4, 6]])
+    # var_constraints = np.array([1, 1])
+    # func_constraints = np.array([-1, 0, 1])
+    # solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    # print("solution is {}, solution value is {}".format(solution, solution_value))
+    #
+    # LP_matrix = np.array([[-5, -3, 0],
+    #                       [1, 2, 3],
+    #                       [2, 1, 3],
+    #                       [2, 0, 3]]).astype(np.float64)
+    # var_constraints = np.array([1, 1])
+    # func_constraints = np.array([-1, -1, -1])
+    # solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    # print("solution is {}, solution value is {}".format(solution, solution_value))
 
-    LP_matrix = np.array([[-5, -3, 0],
-                          [1, 2, 3],
-                          [2, 1, 3],
-                          [2, 0, 3]]).astype(np.float64)
+    LP_matrix = np.array([[1.0, 1.0, 0.0],
+                          [2.0, -1.0, -2.0],
+                          [3.0, -1.0, 0],
+                          [1, 1, 3],
+                          [2, -1, -5]])
     var_constraints = np.array([1, 1])
-    func_constraints = np.array([-1, -1, -1])
+    func_constraints = np.array([1, 1, 1, 1])
     solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
-    print("solution is {}, solution value is {}".format(solution, solution_value))
 
 
 if __name__ == "__main__":
