@@ -40,8 +40,10 @@ def solve_canonical_LP(LP_matrix: np.ndarray, bases: np.ndarray, verbose=False) 
 
         i_enter = neg_obj_coefs[0]
         variable_coefs = A[:, i_enter]
-        bounds = np.divide(b, variable_coefs, where=(variable_coefs > 1e-10))
-        bounds[bounds < 1e-10] = float('Inf')
+        valid_indices = variable_coefs > 1e-10
+        bounds = np.zeros_like(variable_coefs)
+        bounds[variable_coefs < 1e-10] = float('Inf')
+        bounds[valid_indices] = np.divide(b, variable_coefs, where=valid_indices)[valid_indices]
         if np.all(bounds == float('Inf')):
             raise ValueError("no bound found for this LP, "
                              "the A is {} and the chosen entering variable is x_{}".format(A, i_enter))
@@ -130,7 +132,7 @@ def main():
                           [3.0, -1.0, 0],
                           [1, 1, 3],
                           [2, -1, -5]])
-    var_constraints = np.array([1, 1])
+    var_constraints = np.array([1, 0])
     func_constraints = np.array([1, 1, 1, 1])
     solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
 
