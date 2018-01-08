@@ -99,7 +99,7 @@ def solve_LP(LP_matrix, var_constraints, func_constraints, verbose=False):
     print("enter phase 2")
     solution, solution_value = solve_canonical_LP(LP_matrix, bases, verbose)
     solution[neg_constraint_vars] = -solution[neg_constraint_vars]
-    if no_constraint_vars:
+    if no_constraint_vars.size:
         solution[no_constraint_vars] -= solution[nolimit_extra]
     solution = solution[:var_number]
     if verbose:
@@ -276,6 +276,21 @@ def main():
     func_constraints = np.array([1, -1])
     solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
 
+    LP_matrix = np.array([[2, -1, 0],
+                          [1, -1, -1],
+                          [0, 1, 0],
+                          [1, 1, 1]], dtype=np.float64)
+    var_constraints = np.array([0, 0])
+    func_constraints = np.array([1, 1, 1])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    LP_matrix = np.array([[0, 0, 0],
+                          [1, 1, 1],
+                          [2, 1, 1],
+                          [2, -1, 0]], dtype=np.float64)
+    var_constraints = np.array([0, 0])
+    func_constraints = np.array([-1, 1, -1])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
 
 
 if __name__ == "__main__":
