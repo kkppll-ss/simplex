@@ -11,7 +11,7 @@ def solve_canonical_LP(LP_matrix: np.ndarray, bases: np.ndarray, verbose=False) 
     assert bases.ndim == 1, "bases should be a 1-dimensional vector, got {} dimension".format(bases.ndim)
 
     assert np.issubdtype(bases.dtype, np.integer), "bases should be integer, got {}".format(bases.dtype)
-    assert np.issubdtype(LP_matrix.dtype, np.float), "bases should be float, got {}".format(bases.dtype)
+    assert np.issubdtype(LP_matrix.dtype, np.float), "LP_matrix should be float, got {}".format(bases.dtype)
     rows, columns = LP_matrix.shape
     assert rows - 1 == bases.size, "the size of bases should be the row number of LP_matrix minus 1. " \
                                    "got {} and {}".format(bases.size, rows)
@@ -46,7 +46,7 @@ def solve_canonical_LP(LP_matrix: np.ndarray, bases: np.ndarray, verbose=False) 
         bounds[valid_indices] = np.divide(b, variable_coefs, where=valid_indices)[valid_indices]
         if np.all(bounds == float('Inf')):
             raise ValueError("no bound found for this LP, "
-                             "the A is {} and the chosen entering variable is x_{}".format(A, i_enter))
+                             "the LP_matrix is \n{}\nthe chosen entering variable is x_{}".format(LP_matrix, i_enter))
         i_leave = np.argmin(bounds)
         bases[i_leave] = i_enter
         i_leave = i_leave + 1
@@ -135,6 +135,147 @@ def main():
     var_constraints = np.array([1, 0])
     func_constraints = np.array([1, 1, 1, 1])
     solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    LP_matrix = np.array([[-1.0, -1.0, 0.0],
+                          [2.0, 1.0, 6.0],
+                          [-1, 2, 3]], dtype=np.float64)
+    var_constraints = np.array([1, 1])
+    func_constraints = np.array([-1, -1])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    LP_matrix = np.array([[-70, -30, 0.0],
+                          [3, 9, 540],
+                          [5, 5, 450],
+                          [9, 3, 720],
+                          [6, 18, 1080]], dtype=np.float64)
+    var_constraints = np.array([1, 1])
+    func_constraints = np.array([-1, -1, -1, -1])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    try:
+        LP_matrix = np.array([[0, 0, -1, 0],
+                          [-2, 1, 0, -4],
+                          [1, 1, 0, 4],
+                          [1, -2, 0, -4]], dtype=np.float64)
+        var_constraints = np.array([1, 1])
+        func_constraints = np.array([-1, -1, -1])
+        solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    except ValueError as e:
+        print(e)
+
+    try:
+        LP_matrix = np.array([[0, -1, 0],
+                          [1, 0, 1],
+                          [0, 1, 8]], dtype=np.float64)
+        var_constraints = np.array([1, 1])
+        func_constraints = np.array([-1, 1])
+        solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    except ValueError as e:
+        print(e)
+
+    LP_matrix = np.array([[-1, 0],
+                          [1, 1]], dtype=np.float64)
+    var_constraints = np.array([1])
+    func_constraints = np.array([0])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    try:
+        LP_matrix = np.array([[-1, 0],
+                          [1, 5],
+                          [1, 3]], dtype=np.float64)
+        var_constraints = np.array([1])
+        func_constraints = np.array([1, -1])
+        solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    except ValueError as e:
+        print(e)
+
+    try:
+        LP_matrix = np.array([[-2, 1, 0],
+                          [-1, 1, 2],
+                          [1, -4, 2]], dtype=np.float64)
+        var_constraints = np.array([1, 1])
+        func_constraints = np.array([-1, -1])
+        solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    except ValueError as e:
+        print(e)
+
+    LP_matrix = np.array([[3, 2, 2, 3, 0],
+                          [1, -1, 2, 2, 6],
+                          [-2, -2, 1, -1, -5]], dtype=np.float64)
+    var_constraints = np.array([1, 1, 1, 1])
+    func_constraints = np.array([1, -1])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    LP_matrix = np.array([[-1.0, -1.0, 0.0],
+                          [2.0, 1.0, 6.0],
+                          [-1, 2, 3]], dtype=np.float64)
+    var_constraints = np.array([1, 1])
+    func_constraints = np.array([-1, -1])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    LP_matrix = np.array([[-70, -30, 0.0],
+                          [3, 9, 540],
+                          [5, 5, 450],
+                          [9, 3, 720],
+                          [6, 18, 1080]], dtype=np.float64)
+    var_constraints = np.array([1, 1])
+    func_constraints = np.array([-1, -1, -1, -1])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    try:
+        LP_matrix = np.array([[0, 0, -1, 0],
+                              [-2, 1, 0, -4],
+                              [1, 1, 0, 4],
+                              [1, -2, 0, -4]], dtype=np.float64)
+        var_constraints = np.array([1, 1])
+        func_constraints = np.array([-1, -1, -1])
+        solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    except ValueError as e:
+        print(e)
+
+    try:
+        LP_matrix = np.array([[0, -1, 0],
+                              [1, 0, 1],
+                              [0, 1, 8]], dtype=np.float64)
+        var_constraints = np.array([1, 1])
+        func_constraints = np.array([-1, 1])
+        solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    except ValueError as e:
+        print(e)
+
+    LP_matrix = np.array([[-1, 0],
+                          [1, 1]], dtype=np.float64)
+    var_constraints = np.array([1])
+    func_constraints = np.array([0])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
+    try:
+        LP_matrix = np.array([[-1, 0],
+                              [1, 5],
+                              [1, 3]], dtype=np.float64)
+        var_constraints = np.array([1])
+        func_constraints = np.array([1, -1])
+        solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    except ValueError as e:
+        print(e)
+
+    try:
+        LP_matrix = np.array([[-2, 1, 0],
+                              [-1, 1, 2],
+                              [1, -4, 2]], dtype=np.float64)
+        var_constraints = np.array([1, 1])
+        func_constraints = np.array([-1, -1])
+        solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+    except ValueError as e:
+        print(e)
+
+    LP_matrix = np.array([[3, 2, 2, 3, 0],
+                          [1, -1, 2, 2, 6],
+                          [-2, -2, 1, -1, -5]], dtype=np.float64)
+    var_constraints = np.array([1, 1, 1, 1])
+    func_constraints = np.array([1, -1])
+    solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
+
 
 
 if __name__ == "__main__":
