@@ -28,7 +28,7 @@ def main():
 
     try:
         solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
-        print("1\n{}\n{}".format(solution_value, " ".join(str(cell) for cell in solution)))
+        print("1\n{0:.4f}\n{1}".format(solution_value, " ".join("{0:.4f}".format(cell) for cell in solution)))
     except UnboundedError:
         print("0")
     except InfeasibleError:
@@ -36,6 +36,6 @@ def main():
 
 
 if __name__ == '__main__':
-    np.set_printoptions(precision=3, suppress=True)
+    np.set_printoptions(precision=4, suppress=True)
     main()
 
