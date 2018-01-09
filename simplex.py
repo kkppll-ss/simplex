@@ -28,7 +28,8 @@ def main():
 
     try:
         solution, solution_value = solve_LP(LP_matrix, var_constraints, func_constraints, verbose=True)
-        print("1\n{0:.4f}\n{1}".format(solution_value, " ".join("{0:.4f}".format(cell) for cell in solution)))
+        # +0 is use to format negative 0
+        print("1\n{0:.4f}\n{1}".format(solution_value + 0, " ".join("{0:.4f}".format(cell + 0) for cell in solution)))
     except UnboundedError:
         print("0")
     except InfeasibleError:
