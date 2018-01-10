@@ -1,4 +1,7 @@
 import numpy as np
+import sys
+
+epsilon = sys.float_info.epsilon
 
 
 def std_var_constraints(LP_matrix, var_constraints):
@@ -28,7 +31,7 @@ def std_func_constraints(LP_matrix, func_constraints):
     rows, columns = LP_matrix.shape
     b = LP_matrix[1:, columns-1]
     A_and_b = LP_matrix[1:].view()
-    neg_indices = np.where(b < -1e-10)
+    neg_indices = np.where(b < -epsilon)
     A_and_b[neg_indices] = -A_and_b[neg_indices]
     func_constraints[neg_indices] = -func_constraints[neg_indices]
     bases = np.zeros(func_constraints.size, dtype=np.int64)
