@@ -35,6 +35,7 @@ def Solve(A,b,C,op):
                 N[:,pointerN]=A[:,i]
                 Cn[:,pointerN]=C[:,i]
                 pointerN=pointerN+1
+
         B_inv=B.I #m*m matrix
         Gettrue=True
         constantValue=B_inv*b #m*1 matrix
