@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
   out << "]" << endl;
   out << "lb = [";
   for (size_t i = 0u; i != varConstraint.size(); ++i) {
-    if (count != 0u)
+    if (i != 0u)
       out << ", ";
     if (varConstraint[i] == 1)
       out << 0;
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
   out << "]" << endl;
   out << "ub = [";
   for (size_t i = 0u; i != varConstraint.size(); ++i) {
-    if (count != 0u)
+    if (i != 0u)
       out << ", ";
     if (varConstraint[i] == -1)
       out << 0;
