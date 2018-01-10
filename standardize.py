@@ -73,7 +73,7 @@ def standardize(LP_matrix, var_constraints, func_constraints, verbose=False):
 
 def main():
     LP_matrix = np.array([[0.2, 0.3, 0.2, 0.4, 0],
-                          [1, 2, 3, 4, 4],1
+                          [1, 2, 3, 4, 4],
                           [2, 3, 4, 5, 9],
                           [3, 4, 5, 6, -6],
                           [4, 5, 6, 7, -7],
