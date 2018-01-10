@@ -10,9 +10,12 @@ def std_var_constraints(LP_matrix, var_constraints):
     variables_constraints is all positive
     :param LP_matrix: The matrix for Linear Programming, size (m+1) x (n+1)
     :param var_constraints: type of variable constraints, size (n), dtype np.integer
-    :return: (neg_constraint_vars, no_constraint_vars): the indices of negative and
+    :return: LP_matrix: the LP matrix after this operation
+    (neg_constraint_vars, no_constraint_vars): the indices of negative and
     no constraint variables. Used for restore original value after computation
     finished
+    nolimit_extra: the extra variable added for variables without constraints, use for restoring
+    their values
     """
     rows, columns = LP_matrix.shape
     neg_constraint_vars = np.where(var_constraints == -1)[0]
@@ -28,6 +31,16 @@ def std_var_constraints(LP_matrix, var_constraints):
 
 
 def std_func_constraints(LP_matrix, func_constraints):
+    """
+    after the operation, the LP_matrix and func_constraints is adjusted such that
+    variables_constraints is all positive
+    :param LP_matrix: The matrix for Linear Programming, size (m+1) x (n+1)
+    :param func_constraints: type of functional constraints, size (m), dtype np.integer
+    :return: LP_matrix: the LP matrix after this operation
+    phase1_slack_vars: the indices of slack variables used for phase 1
+    extra_vars: other slack, surplus and artificial variables
+    bases: the bases variables
+    """
     rows, columns = LP_matrix.shape
     b = LP_matrix[1:, columns-1]
     A_and_b = LP_matrix[1:].view()
@@ -72,21 +85,3 @@ def standardize(LP_matrix, var_constraints, func_constraints, verbose=False):
               "vars {} are bases".format(LP_matrix, neg_constraint_vars, no_constraint_vars, nolimit_extra,
                                          phase1_slack_vars, extra_vars, bases))
     return LP_matrix, neg_constraint_vars, no_constraint_vars, nolimit_extra, phase1_slack_vars, bases
-
-
-def main():
-    LP_matrix = np.array([[0.2, 0.3, 0.2, 0.4, 0],
-                          [1, 2, 3, 4, 4],
-                          [2, 3, 4, 5, 9],
-                          [3, 4, 5, 6, -6],
-                          [4, 5, 6, 7, -7],
-                          [5, 6, 7, 8, -5]])
-    func_constraints = np.array([1, -1, 1, -1, 0])
-    var_constraints = np.array([1, -1, 0, 1])
-    LP_matrix, neg_constraint_vars, no_constraint_vars, nolimit_extra, phase1_slack_vars, bases \
-        = standardize(LP_matrix, var_constraints, func_constraints, True)
-
-if __name__ == '__main__':
-    main()
-
-

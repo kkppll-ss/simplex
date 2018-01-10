@@ -18,6 +18,16 @@ class UnboundedError(ValueError):
 
 
 def solve_canonical_LP(LP_matrix: np.ndarray, bases: np.ndarray, verbose=False) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    solve LP canonical form. slack variables, artificial variables and surplus variable are added
+    and the initial feasible solution is easily read from the simplex tableau
+    :param LP_matrix: the matrix of the LP, size m+1 x n+1
+    :param bases: the bases variables, size m .For example, [0, 3, 2] means the bases for
+    constraint 0, 1, 2 are x_0, x_3 and x_2, respectively.
+    :param verbose: Bool, if true, additional message is printed
+    :return: (solution, solution_value). solution is a n-dimensional array, solution_value is the Z
+    value of the solution
+    """
     assert LP_matrix.ndim == 2, \
         "LP_matrix should be a 2-dimensional vector, got {} dimension".format(LP_matrix.ndim)
     assert bases.ndim == 1, "bases should be a 1-dimensional vector, got {} dimension".format(bases.ndim)
@@ -89,6 +99,14 @@ def transform_canonical(LP_matrix: np.ndarray, bases: np.ndarray, verbose=False)
 
 
 def solve_LP(LP_matrix, var_constraints, func_constraints, verbose=False):
+    """
+    :param LP_matrix: the matrix of the LP, size m+1 x n+1
+    :param var_constraints: variable constraints, 1: >=0, -1: <= 0, 0: no constraint, size: n
+    :param func_constraints: functional constraint, 1: >=0, -1: <= 0, 0: no constraint, size: m
+    :param verbose: Bool, if true, additional message is printed
+    :return: (solution, solution_value). solution is a n-dimensional array, solution_value is the Z
+    value of the solution
+    """
     _, columns = LP_matrix.shape
     var_number = columns - 1
     if verbose:
