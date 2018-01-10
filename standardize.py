@@ -57,7 +57,7 @@ def add_vars(LP_matrix, func_constraints, ctype, vtype, bases):
             bases[constraint_indices] = bases_indices
         return LP_matrix, bases_indices
     else:
-        return LP_matrix, np.array([])
+        return LP_matrix, np.array([], dtype=np.int64)
 
 
 def standardize(LP_matrix, var_constraints, func_constraints, verbose=False):
